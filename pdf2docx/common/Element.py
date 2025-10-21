@@ -148,7 +148,7 @@ class Element(IText):
         Returns:
             bool: [description]
         """
-        S = e.bbox.width * e.bbox.height if bool(e) else 0.0
+        S = e.bbox.get_area()
         if not S: return False
 
         # it's not practical to set a general threshold to consider the margin, so two steps:
@@ -156,8 +156,7 @@ class Element(IText):
         # - check the length in main direction strictly
         # A contains B => A & B = B
         intersection = self.bbox & e.bbox
-        area = intersection.width * intersection.height if not intersection.is_empty else 0.0
-        factor = round(area/S, 2)
+        factor = round(intersection.get_area()/S, 2)
         if factor<threshold: return False
 
         # check length
